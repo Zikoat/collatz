@@ -16,4 +16,4 @@ if `maxN` is over 1,000,000 it will log all of the highest numbers it has found.
 ## Hard
 Hard difficulty is done as a force directed graph using springy.js.
 usage:
-open in browser or go to [collatz-conjecture.firebaseapp.com/collatzHard.html]
+open in browser or go to https://collatz-conjecture.firebaseapp.com/collatzHard.html
