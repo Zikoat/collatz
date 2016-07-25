@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>springy collatz</title>
+	<style>
+		* { margin:0; padding:0; }
+		canvas {
+			display:block; 
+		}
+	</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/springy/2.7.1/springy.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/springy/2.7.1/springyui.min.js"></script>
+<canvas id="my_canvas"/>	
+<script>
+//jshint esversion: 6
+
+var graph = new Springy.Graph(); // initiate graph
+var numbers = [];
+
+var n = 3; // start the loop at n = 3
+
+setInterval(() => {// the main loop, which adds a node (or two) each 800 ms
+	n = addNext(n);
+}, 1000);
+
+function collatzNumber (n) { // return the next number in the sequence
+	// using a ternary operator
+	return isEven(n) ? 
+		n/2 :  // if n is even, divide by 2
+		n*3+1; // if n is odd,  multiply by 3 and add 1
+}
+function isEven (n) {
+	return n % 2 === 0;
+}
+
+function addNext (n) {
+
+	nextN = collatzNumber(n);
+
+	// add this and the next number to the graph. 
+	// if  the node already exists, it wont be created again
+	graph.addNodes(n, nextN);
+	// make the color of the arrow green if n is odd, and red if it is even
+	let color = isEven(n) ? '#ff0000' : '#00ff00' ;
+	// create a link between the current and next number
+	if (!(numbers.includes(n) ||  n == 1)) {
+		graph.addEdges([n, nextN, {color}]);
+	// if n is 1 or already exists, we do not create a link,
+	// but find a new n with the chooseNext function
+	} else nextN = chooseNext(); 
+	return nextN;
+}
+
+function chooseNext () { // returns the smallest missing integer
+	// recreate the numbers array with all the nodes in the graph
+	numbers = []; 
+	for (let i = 0; i < graph.nodes.length; i++) {
+		numbers.push(graph.nodes[i].id);
+	}
+	// sort the numbers in ascending order
+	numbers.sort(function(a, b) {
+  		return a - b;
+	});
+	// find the smallest integer missing from the array
+	for (let i = 0; i < numbers.length; i++) {
+		if (i+1 != numbers[i]) return i+1;
+	}
+}
+// add the springy graph to the canvas
+$('#my_canvas').springy({ graph: graph });
+
+var canvas = document.getElementById("my_canvas");
+/*
+canvas.style.width = window.innerWidth + "px";
+canvas.style.height = window.innerHeight + "px";
+*/
+canvas.width  = window.innerWidth;
+canvas.height = window.innerHeight;
+</script>
+</body>
+</html>
