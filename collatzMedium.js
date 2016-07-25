@@ -33,7 +33,7 @@ while (n < maxN) {
 var timeDifference = process.hrtime(timeStart); // stop timing
 
 function timeToMs(time) { // converts process.hrtime to ms
-	return Math.floor((time[1]/1000+time[0]*1000000));
+	return Math.floor((time[1]+time[0]*1e+9)/1e+6);
 }
 
 console.log('operation for ' + n + ' sequences took ' + timeToMs(timeDifference) + ' ms.');
