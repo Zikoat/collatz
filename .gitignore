@@ -30,3 +30,7 @@ node_modules
 *.sublime-project
 *.sublime-workspace
 /ignore
+*.json
+404*
+.firebaserc
+index.html
